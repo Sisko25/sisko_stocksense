@@ -1,8 +1,11 @@
-import fs from "fs";
-import path from "path";
+import { createClient } from "@supabase/supabase-js";
 
-const isProd = process.env.NODE_ENV === "production";
-const dbPath = isProd ? "/tmp/db.json" : path.join(process.cwd(), "db.json");
+// Ensure you add these to .env.local and Netlify Env Vars!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder";
+
+// Exporting a singleton client
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface User {
   email: string;
@@ -10,35 +13,59 @@ export interface User {
   isPremium: boolean;
 }
 
-export function getDb(): { users: User[] } {
-  if (!fs.existsSync(dbPath)) {
-    fs.writeFileSync(dbPath, JSON.stringify({ users: [] }));
-  }
-  const data = fs.readFileSync(dbPath, "utf-8");
-  return JSON.parse(data);
+export async function findUserByEmail(email: string): Promise<User | undefined> {
+  if (!supabaseUrl) return undefined;
+  
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", email)
+    .single();
+
+  if (error || !data) return undefined;
+  
+  return {
+    email: data.email,
+    password: data.password,
+    isPremium: data.is_premium
+  };
 }
 
-export function saveDb(data: { users: User[] }) {
-  fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
+export async function createUser(user: User): Promise<User> {
+  if (!supabaseUrl) throw new Error("Supabase is not configured");
+
+  const { data, error } = await supabase
+    .from("users")
+    .insert([{ 
+      email: user.email, 
+      password: user.password, 
+      is_premium: user.isPremium 
+    }])
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+  
+  return {
+    email: data.email,
+    password: data.password,
+    isPremium: data.is_premium
+  };
 }
 
-export function findUserByEmail(email: string): User | undefined {
-  const db = getDb();
-  return db.users.find(u => u.email === email);
-}
+export async function updateUser(email: string, updates: Partial<User>) {
+  if (!supabaseUrl) return;
 
-export function createUser(user: User): User {
-  const db = getDb();
-  db.users.push(user);
-  saveDb(db);
-  return user;
-}
+  const dbUpdates: any = {};
+  if (updates.isPremium !== undefined) dbUpdates.is_premium = updates.isPremium;
+  if (updates.password !== undefined) dbUpdates.password = updates.password;
 
-export function updateUser(email: string, updates: Partial<User>) {
-  const db = getDb();
-  const userIndex = db.users.findIndex(u => u.email === email);
-  if (userIndex !== -1) {
-    db.users[userIndex] = { ...db.users[userIndex], ...updates };
-    saveDb(db);
+  const { error } = await supabase
+    .from("users")
+    .update(dbUpdates)
+    .eq("email", email);
+
+  if (error) {
+    console.error("Failed to update user in Supabase:", error.message);
   }
 }

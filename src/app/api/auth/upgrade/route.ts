@@ -9,10 +9,10 @@ export async function POST() {
   }
 
   // Update DB
-  updateUser(session.email, { isPremium: true });
+  await updateUser(session.email, { isPremium: true });
 
   // Update session
-  const updatedUser = findUserByEmail(session.email);
+  const updatedUser = await findUserByEmail(session.email);
   if (updatedUser) {
     await setSession(updatedUser);
   }

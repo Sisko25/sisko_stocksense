@@ -10,12 +10,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Email and password required" }, { status: 400 });
     }
 
-    const existingUser = findUserByEmail(email);
+    const existingUser = await findUserByEmail(email);
     if (existingUser) {
       return NextResponse.json({ error: "User already exists" }, { status: 400 });
     }
 
-    const newUser = createUser({ email, password, isPremium: false });
+    const newUser = await createUser({ email, password, isPremium: false });
     await setSession(newUser);
 
     return NextResponse.json({ user: { email: newUser.email, isPremium: newUser.isPremium } });
