@@ -1,7 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-const dbPath = path.join(process.cwd(), "db.json");
+const isProd = process.env.NODE_ENV === "production";
+const dbPath = isProd ? "/tmp/db.json" : path.join(process.cwd(), "db.json");
 
 export interface User {
   email: string;
