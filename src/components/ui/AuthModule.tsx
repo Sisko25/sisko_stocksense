@@ -23,7 +23,7 @@ export function AuthModule() {
         <GlassButton 
           className="text-xs px-3 py-1 bg-red-500/20 text-red-400 border-red-500/30 hover:bg-red-500/40"
           onClick={async () => {
-            await fetch("/api/auth/logout", { method: "POST" });
+            await fetch("/stockscreen/api/auth/logout", { method: "POST" });
             mutateUser();
           }}
         >
@@ -62,7 +62,7 @@ export function AuthModule() {
               className="w-full bg-indigo-500/20 text-white border-indigo-500/50 mt-2"
               onClick={async () => {
                 setError("");
-                const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
+                const endpoint = isLogin ? "/stockscreen/api/auth/login" : "/stockscreen/api/auth/register";
                 const res = await fetch(endpoint, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },

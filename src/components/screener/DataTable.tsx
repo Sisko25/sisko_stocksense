@@ -30,8 +30,8 @@ export function DataTable({ selectedTicker }: { selectedTicker?: string }) {
   }, [selectedTicker]);
 
   const url = listType === "search" && selectedTicker 
-    ? `/api/screener?ticker=${selectedTicker}`
-    : `/api/screener?type=${listType}`;
+    ? `/stockscreen/api/screener?ticker=${selectedTicker}`
+    : `/stockscreen/api/screener?type=${listType}`;
 
   const { data: stocks, error, isLoading } = useSWR<Stock[]>(
     url, 

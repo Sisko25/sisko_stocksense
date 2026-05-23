@@ -30,7 +30,7 @@ export function AIInsights({ selectedTicker }: { selectedTicker: string }) {
   const chatScrollRef = useRef<HTMLDivElement>(null);
   
   const { data, isLoading } = useSWR(
-    selectedTicker ? ["/api/ai/insights", selectedTicker] : null,
+    selectedTicker ? ["/stockscreen/api/ai/insights", selectedTicker] : null,
     ([url, ticker]) => fetchAIInsights(url, ticker)
   );
 
@@ -52,7 +52,7 @@ export function AIInsights({ selectedTicker }: { selectedTicker: string }) {
     
     setIsCheckoutLoading(true);
     try {
-      const response = await fetch("/api/stripe/checkout", {
+      const response = await fetch("/stockscreen/api/stripe/checkout", {
         method: "POST",
       });
       const data = await response.json();
@@ -79,7 +79,7 @@ export function AIInsights({ selectedTicker }: { selectedTicker: string }) {
     setIsChatLoading(true);
 
     try {
-      const response = await fetch("/api/ai/chat", {
+      const response = await fetch("/stockscreen/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: newMessages, ticker: selectedTicker }),

@@ -20,7 +20,7 @@ const AuthContext = createContext<AuthContextType>({
 const fetcher = (url: string) => fetch(url).then(r => r.json());
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const { data, mutate, isLoading } = useSWR("/api/auth/me", fetcher);
+  const { data, mutate, isLoading } = useSWR("/stockscreen/api/auth/me", fetcher);
   const [isUpgrading, setIsUpgrading] = useState(false);
 
   const user = data?.user || null;
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (urlParams.get("success") === "true") {
         setIsUpgrading(true);
         // Call upgrade API to mark user as premium
-        fetch("/api/auth/upgrade", { method: "POST" }).then(() => {
+        fetch("/stockscreen/api/auth/upgrade", { method: "POST" }).then(() => {
           mutate();
           // Clean up URL without reloading the page
           window.history.replaceState({}, document.title, window.location.pathname);
