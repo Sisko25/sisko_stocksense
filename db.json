@@ -1,0 +1,9 @@
+{
+  "users": [
+    {
+      "email": "sisko@duck.com",
+      "password": "Sisko2203",
+      "isPremium": true
+    }
+  ]
+}
