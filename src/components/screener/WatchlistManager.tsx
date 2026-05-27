@@ -131,7 +131,7 @@ export function WatchlistManager({
   const activeList = watchlists.find(w => w.id === activeListId);
 
   return (
-    <GlassCard className="h-full flex flex-col">
+    <GlassCard className="flex flex-col">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold tracking-tight text-white flex items-center gap-2">
           Watchlists

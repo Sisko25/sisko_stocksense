@@ -97,7 +97,7 @@ export function AIInsights({ selectedTicker }: { selectedTicker: string }) {
   };
 
   return (
-    <GlassCard className="h-full flex flex-col relative overflow-hidden">
+    <GlassCard className="flex-1 flex flex-col relative overflow-hidden">
       <div className="flex items-center gap-2 mb-4">
         <BrainCircuit className="w-5 h-5 text-indigo-400" />
         <h2 className="text-xl font-semibold tracking-tight">Sisko AI Analysis</h2>
