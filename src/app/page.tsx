@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { DataTable } from "@/components/screener/DataTable";
 import { AIInsights } from "@/components/screener/AIInsights";
+import { WatchlistManager } from "@/components/screener/WatchlistManager";
 import { Activity, Search } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { AuthModule } from "@/components/ui/AuthModule";
@@ -83,8 +84,9 @@ export default function Home() {
             <TradingChart selectedTicker={selectedTicker} />
           </div>
 
-          {/* Right Column: AI Insights */}
-          <div className="flex flex-col min-h-[400px]">
+          {/* Right Column: AI Insights & Watchlists */}
+          <div className="flex flex-col gap-6 min-h-[400px]">
+            <WatchlistManager selectedTicker={selectedTicker} onSelectTicker={setSelectedTicker} />
             <AIInsights selectedTicker={selectedTicker} />
           </div>
         </div>
