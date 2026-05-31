@@ -120,7 +120,7 @@ export function WatchlistManager({
 
   if (!user) {
     return (
-      <GlassCard className="h-full flex flex-col items-center justify-center text-center p-8">
+      <GlassCard className="flex flex-col items-center justify-center text-center p-8">
         <Activity className="w-12 h-12 text-slate-500 mb-4 opacity-50" />
         <h3 className="text-lg font-semibold text-white mb-2">Watchlists</h3>
         <p className="text-sm text-slate-400">Login to create and manage your custom watchlists.</p>
